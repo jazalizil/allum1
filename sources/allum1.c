@@ -5,11 +5,14 @@
 ** Login   <dabbec_j@epitech.net>
 ** 
 ** Started on  Tue Jul 02 14:12:31 2013 jalil dabbech
-** Last update Wed Jul 03 19:38:57 2013 jalil dabbech
+** Last update Thu Jul 04 17:08:27 2013 jalil dabbech
 */
 
 #include <ncurses.h>
+#include <signal.h>
 #include "my_allum1.h"
+
+int	rows;
 
 void	init_curse()
 {
@@ -30,7 +33,8 @@ void	draw_menubar(WINDOW *menubar)
   waddstr(menubar, "Help");
 }
 
-void	draw_triangle(int nb_rows, int many_row, int many_col)
+void	draw_triangle(int nb_rows, int many_row, int many_col,
+    			t_triangle **my_triangle)
 {
   int	x;
   int	i;
@@ -45,6 +49,7 @@ void	draw_triangle(int nb_rows, int many_row, int many_col)
     while (j <= x)
     {
       move(i, j);
+      my_put_in_list(my_triangle, i, j);
       attron(COLOR_PAIR(2));
       printw("|");
       attroff(COLOR_PAIR(2));
@@ -57,17 +62,12 @@ void	draw_triangle(int nb_rows, int many_row, int many_col)
   move(i - 1, j - 1);
 }
 
-void		my_allum(int nb_allum, int nb_rows, int nb_player)
+WINDOW		*draw_window(int nb_rows, t_triangle **my_triangle)
 {
-  int		key;
-  WINDOW	*menubar;
   int		many_col;
   int		many_row;
-  int		x;
-  int		y;
+  WINDOW	*menubar;
 
-  key = 0;
-  init_curse();
   bkgd(COLOR_PAIR(1));
   getmaxyx(stdscr, many_row, many_col);
   menubar = subwin(stdscr, 1, many_col, 0, 0);
@@ -75,22 +75,40 @@ void		my_allum(int nb_allum, int nb_rows, int nb_player)
   move(2, 0);
   printw("Press Escape to quit");
   refresh();
-  draw_triangle(nb_rows, many_row, many_col);
-  raw();
+  draw_triangle(nb_rows, many_row, many_col, my_triangle);
+  return (menubar);
+}
+
+void		my_allum(int nb_allum, int nb_rows, int nb_player)
+{
+  int		key;
+  int		x;
+  int		y;
+  t_triangle	*my_triangle;
+  WINDOW	*menubar;
+
+  my_triangle = NULL;
+  key = 0;
+  init_curse();
   chgat(1, A_REVERSE | A_BOLD, 0, NULL);
+  menubar = draw_window(nb_rows, &my_triangle);
+  raw();
   while (key != ESCAPE)
   {
     key = getch();
     getyx(stdscr, y, x);
-    if (key == UP)
-      move(y - 1, x);
-    else if (key == DOWN)
-      move(y + 1, x);
-    else if (key == LEFT)
-      move(y, x - 1);
-    else if (key == RIGHT)
-      move(y, x + 1);
-    chgat(1, A_NORMAL, 0, NULL);
+    if (key == KEY_UP)
+      move(--y, x);
+    else if (key == KEY_DOWN)
+      move(++y, x);
+    else if (key == KEY_LEFT)
+      move(y, --x);
+    else if (key == KEY_RIGHT)
+      move(y, ++x);
+    if (is_in_list(&my_triangle, y, x))
+      chgat(1, A_NORMAL, 0, NULL);
+    else
+      chgat(1, A_REVERSE, 0, NULL);
     refresh();
   }
   delwin(menubar);

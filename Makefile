@@ -5,7 +5,7 @@
 ## Login   <dabbec_j@epitech.net>
 ## 
 ## Started on  Thu Jun 06 16:16:01 2013 jalil dabbech
-## Last update Tue Jul 02 18:46:29 2013 jalil dabbech
+## Last update Thu Jul 04 14:58:47 2013 jalil dabbech
 ##
 
 NAME	=	allum1
@@ -13,7 +13,8 @@ NAME	=	allum1
 SRC	=	sources/main.c \
 		sources/manage_options.c \
 		sources/putch.c \
-		sources/allum1.c
+		sources/allum1.c \
+		sources/my_list.c
 
 OBJ	=	$(SRC:.c=.o)
 
