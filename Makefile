@@ -1,11 +1,11 @@
 ##
-## Makefile for allum1 in /home/dabbec_j/projets/allum1
+## Makefile for allum1 in /Volumes/Jazalizil/Utilisateurs/jazalizil/allum1
 ## 
 ## Made by jalil dabbech
 ## Login   <dabbec_j@epitech.net>
 ## 
 ## Started on  Thu Jun 06 16:16:01 2013 jalil dabbech
-## Last update Thu Jul 04 14:58:47 2013 jalil dabbech
+## Last update Jeu jul 04 17:51:08 2013 jalil dabbech
 ##
 
 NAME	=	allum1

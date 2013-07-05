@@ -1,11 +1,11 @@
 /*
-** my_list.c for sources in /home/dabbec_j/projets/allum1/sources
+** my_list.c for sources in /Volumes/Jazalizil/Utilisateurs/jazalizil/allum1/sources
 ** 
 ** Made by jalil dabbech
 ** Login   <dabbec_j@epitech.net>
 ** 
 ** Started on  Wed Jun 05 14:39:20 2013 jalil dabbech
-** Last update Fri Jul 05 19:03:31 2013 jalil dabbech
+** Last update Ven jul 05 23:38:44 2013 jalil dabbech
 */
 
 #include <stdlib.h>

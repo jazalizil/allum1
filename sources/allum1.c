@@ -1,11 +1,11 @@
 /*
-** allum1.c for sources in /home/dabbec_j/projets/allum1/sources
+** allum1.c for sources in /Volumes/Jazalizil/Utilisateurs/jazalizil/allum1/sources
 ** 
 ** Made by jalil dabbech
 ** Login   <dabbec_j@epitech.net>
 ** 
 ** Started on  Tue Jul 02 14:12:31 2013 jalil dabbech
-** Last update Fri Jul 05 19:03:30 2013 jalil dabbech
+** Last update Ven jul 05 23:53:52 2013 jalil dabbech
 */
 
 #include <ncurses.h>
@@ -88,6 +88,7 @@ void		my_allum(int nb_allum, int nb_rows, int nb_player)
   WINDOW	*menubar;
   int		tmpx;
   int		tmpy;
+  int		flag;
 
   my_triangle = NULL;
   key = 0;
@@ -104,33 +105,33 @@ void		my_allum(int nb_allum, int nb_rows, int nb_player)
     getyx(stdscr, y, x);
     if (key == KEY_UP && is_in_list(&my_triangle, y - 1, x))
     {
-      if (!is_del(&my_triangle, y, x))
+      if (!(flag = is_del(&my_triangle, y, x)))
       {
-	chgat(1, !A_UNDERLINE, 0, NULL);
+      chgat(1, !A_UNDERLINE, 0, NULL);
 	attron(COLOR_PAIR(2));
 	printw("|");
 	attroff(COLOR_PAIR(2));
-	move(--y, x);
-	chgat(1, A_UNDERLINE, 0, NULL);
       }
+      move(--y, x);
+      !flag ? chgat(1, A_UNDERLINE, 0, NULL) : flag;
     }
     else if (key == KEY_DOWN && is_in_list(&my_triangle, y + 1, x))
     {
-      chgat(1, !A_UNDERLINE, 0, NULL);
-      if (!is_del(&my_triangle, y, x))
+      if (!(flag = is_del(&my_triangle, y, x)))
       {
+      chgat(1, !A_UNDERLINE, 0, NULL);
 	attron(COLOR_PAIR(2));
 	printw("|");
 	attroff(COLOR_PAIR(2));
       }
       move(++y, x);
-      chgat(1, A_UNDERLINE, 0, NULL);
+      !flag ? chgat(1, A_UNDERLINE, 0, NULL) : flag;
     }
     else if (key == KEY_LEFT && is_in_list(&my_triangle, y, x - 1))
     {
-      chgat(1, !A_UNDERLINE, 0, NULL);
-      if (!is_del(&my_triangle, y, x))
+      if (!(flag = is_del(&my_triangle, y, x)))
       {
+      chgat(1, !A_UNDERLINE, 0, NULL);
 	attron(COLOR_PAIR(2));
 	printw("|");
 	attroff(COLOR_PAIR(2));
@@ -140,15 +141,15 @@ void		my_allum(int nb_allum, int nb_rows, int nb_player)
     }
     else if (key == KEY_RIGHT && is_in_list(&my_triangle, y, x + 1))
     {
-      chgat(1, !A_UNDERLINE, 0, NULL);
-      if (!is_del(&my_triangle, y, x))
+      if (!(flag = is_del(&my_triangle, y, x)))
       {
+      chgat(1, !A_UNDERLINE, 0, NULL);
 	attron(COLOR_PAIR(2));
 	printw("|");
 	attroff(COLOR_PAIR(2));
       }
       move(y, ++x);
-      chgat(1, A_UNDERLINE, 0, NULL);
+      !flag ? chgat(1, A_UNDERLINE, 0, NULL) : flag;
     }
     else if (key == SPACE || key == KEY_BACKSPACE || key == KEY_DC)
     {
@@ -160,13 +161,13 @@ void		my_allum(int nb_allum, int nb_rows, int nb_player)
       printw(" ");
       attroff(COLOR_PAIR(1));
       set_del(&my_triangle, y, x);
-      if (is_in_list(&my_triangle, y + 1, x))
+      if (is_in_list(&my_triangle, y + 1, x) && !is_del(&my_triangle, y + 1, x))
 	move(++y, x);
-      else if (is_in_list(&my_triangle, y - 1, x))
+      else if (is_in_list(&my_triangle, y - 1, x) && !is_del(&my_triangle, y - 1, x))
 	move(--y, x);
-      else if (is_in_list(&my_triangle, y, x + 1))
+      else if (is_in_list(&my_triangle, y, x + 1) && !is_del(&my_triangle, y, x + 1))
 	move(y, ++x);
-      else
+      else if (is_in_list(&my_triangle, y, x - 1) && !is_del(&my_triangle, y, x - 1))
 	move(y, --x);
       chgat(1, A_UNDERLINE, 0, NULL);
     }
