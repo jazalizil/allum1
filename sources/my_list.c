@@ -5,7 +5,7 @@
 ** Login   <dabbec_j@epitech.net>
 ** 
 ** Started on  Wed Jun 05 14:39:20 2013 jalil dabbech
-** Last update Thu Jul 04 17:08:28 2013 jalil dabbech
+** Last update Fri Jul 05 19:03:31 2013 jalil dabbech
 */
 
 #include <stdlib.h>
@@ -22,6 +22,7 @@ void		my_put_in_list(t_triangle **my_list, int abs, int ord)
     return;
   new->x = abs;
   new->y = ord;
+  new->del = 0;
   new->next = NULL;
   if (!(*my_list))
     *my_list = new;
@@ -31,6 +32,35 @@ void		my_put_in_list(t_triangle **my_list, int abs, int ord)
       my_list = &((*my_list)->next);
     (*my_list)->next = new;
   }
+}
+
+void		set_del(t_triangle **my_list, int abs, int ord)
+{
+  while ((*my_list))
+  {
+    if (abs == (*my_list)->x && ord == ((*my_list)->y) && !((*my_list)->del))
+    {
+      (*my_list)->del = 1;
+      return ;
+    }
+    my_list = &((*my_list)->next);
+  }
+}
+
+int		is_del(t_triangle **my_list, int abs, int ord)
+{
+  while ((*my_list))
+  {
+    if (abs == (*my_list)->x && ord == (*my_list)->y)
+    {
+      if ((*my_list)->del)
+	return (1);
+      else
+	return (0);
+    }
+    my_list = &((*my_list)->next);
+  }
+  return (0);
 }
 
 int		is_in_list(t_triangle **my_list, int abs, int ord)
