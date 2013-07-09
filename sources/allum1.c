@@ -1,24 +1,22 @@
 /*
-** allum1.c for sources in /Volumes/Jazalizil/Utilisateurs/jazalizil/allum1/sources
+** allum1.c for sources in /home/dabbec_j/projets/allum1/sources
 ** 
 ** Made by jalil dabbech
 ** Login   <dabbec_j@epitech.net>
 ** 
 ** Started on  Tue Jul 02 14:12:31 2013 jalil dabbech
-** Last update Ven jul 05 23:53:52 2013 jalil dabbech
+** Last update Tue Jul 09 18:58:07 2013 jalil dabbech
 */
 
 #include <ncurses.h>
 #include <unistd.h>
 #include "my_allum1.h"
 
-int	rows;
-
 void	init_curse()
 {
   initscr();
   start_color();
-  init_pair(1,COLOR_YELLOW, COLOR_BLUE);
+  init_pair(1,COLOR_WHITE, COLOR_BLUE);
   init_pair(2,COLOR_WHITE, COLOR_MAGENTA);
   init_pair(3,COLOR_RED, COLOR_WHITE);
   init_pair(4,COLOR_BLUE, COLOR_WHITE);
@@ -62,119 +60,66 @@ void	draw_triangle(int nb_rows, int many_row, int many_col,
   move(i - 1, j - 1);
 }
 
-WINDOW		*draw_window(int nb_rows, t_triangle **my_triangle)
+WINDOW		*draw_window(int nb_rows, int nb_player,
+    				t_triangle **my_triangle)
 {
-  int		many_col;
-  int		many_row;
   WINDOW	*menubar;
 
   bkgd(COLOR_PAIR(1));
-  getmaxyx(stdscr, many_row, many_col);
-  menubar = subwin(stdscr, 1, many_col, 0, 0);
+  menubar = subwin(stdscr, 1, COLS, 0, 0);
   draw_menubar(menubar);
   move(2, 0);
   printw("Press Escape to quit");
   refresh();
-  draw_triangle(nb_rows, many_row, many_col, my_triangle);
+  draw_triangle(nb_rows, LINES, COLS, my_triangle);
   return (menubar);
 }
 
-void		my_allum(int nb_allum, int nb_rows, int nb_player)
+void		del_char(t_triangle **my_triangle)
 {
-  int		key;
   int		x;
   int		y;
+
+  getyx(stdscr, y, x);
+  chgat(1, !A_UNDERLINE, 0, NULL);
+  attron(COLOR_PAIR(1));
+  printw(" ");
+  attroff(COLOR_PAIR(1));
+  set_del(my_triangle, y, x);
+  if (is_in_list(my_triangle, y, x - 1))
+    move(y, x - 1);
+  else if (is_in_list(my_triangle, y, x + 1))
+    move(y, x + 1);
+  else if (is_in_list(my_triangle, y - 1, x))
+    move(y - 1, x);
+  else
+    move(y + 1, x);
+  chgat(1, A_UNDERLINE, 0, NULL);
+}
+
+void		my_allum(int nb_rows, int nb_player)
+{
+  int		key;
   t_triangle	*my_triangle;
   WINDOW	*menubar;
-  int		tmpx;
-  int		tmpy;
-  int		flag;
 
   my_triangle = NULL;
   key = 0;
-  tmpx = 0;
-  tmpy = 0;
   init_curse();
-  menubar = draw_window(nb_rows, &my_triangle);
+  menubar = draw_window(nb_rows, nb_player, &my_triangle);
   chgat(1, A_UNDERLINE, 0, NULL);
   refresh();
   raw();
-  while (key != ESCAPE)
+  while ((key = getch()) != ESCAPE)
   {
-    key = getch();
-    getyx(stdscr, y, x);
-    if (key == KEY_UP && is_in_list(&my_triangle, y - 1, x))
+    if (key == SPACE || key == KEY_BACKSPACE || key == KEY_DC)
     {
-      if (!(flag = is_del(&my_triangle, y, x)))
-      {
-      chgat(1, !A_UNDERLINE, 0, NULL);
-	attron(COLOR_PAIR(2));
-	printw("|");
-	attroff(COLOR_PAIR(2));
-      }
-      move(--y, x);
-      !flag ? chgat(1, A_UNDERLINE, 0, NULL) : flag;
+      del_char(&my_triangle);
+      if (nb_player == 1)
+	do_the_ia(&my_triangle);
     }
-    else if (key == KEY_DOWN && is_in_list(&my_triangle, y + 1, x))
-    {
-      if (!(flag = is_del(&my_triangle, y, x)))
-      {
-      chgat(1, !A_UNDERLINE, 0, NULL);
-	attron(COLOR_PAIR(2));
-	printw("|");
-	attroff(COLOR_PAIR(2));
-      }
-      move(++y, x);
-      !flag ? chgat(1, A_UNDERLINE, 0, NULL) : flag;
-    }
-    else if (key == KEY_LEFT && is_in_list(&my_triangle, y, x - 1))
-    {
-      if (!(flag = is_del(&my_triangle, y, x)))
-      {
-      chgat(1, !A_UNDERLINE, 0, NULL);
-	attron(COLOR_PAIR(2));
-	printw("|");
-	attroff(COLOR_PAIR(2));
-      }
-      move(y, --x);
-      chgat(1, A_UNDERLINE, 0, NULL);
-    }
-    else if (key == KEY_RIGHT && is_in_list(&my_triangle, y, x + 1))
-    {
-      if (!(flag = is_del(&my_triangle, y, x)))
-      {
-      chgat(1, !A_UNDERLINE, 0, NULL);
-	attron(COLOR_PAIR(2));
-	printw("|");
-	attroff(COLOR_PAIR(2));
-      }
-      move(y, ++x);
-      !flag ? chgat(1, A_UNDERLINE, 0, NULL) : flag;
-    }
-    else if (key == SPACE || key == KEY_BACKSPACE || key == KEY_DC)
-    {
-      /*
-      deleteln();
-      */
-      chgat(1, !A_UNDERLINE, 0, NULL);
-      attron(COLOR_PAIR(1));
-      printw(" ");
-      attroff(COLOR_PAIR(1));
-      set_del(&my_triangle, y, x);
-      if (is_in_list(&my_triangle, y + 1, x) && !is_del(&my_triangle, y + 1, x))
-	move(++y, x);
-      else if (is_in_list(&my_triangle, y - 1, x) && !is_del(&my_triangle, y - 1, x))
-	move(--y, x);
-      else if (is_in_list(&my_triangle, y, x + 1) && !is_del(&my_triangle, y, x + 1))
-	move(y, ++x);
-      else if (is_in_list(&my_triangle, y, x - 1) && !is_del(&my_triangle, y, x - 1))
-	move(y, --x);
-      chgat(1, A_UNDERLINE, 0, NULL);
-    }
-    /*
     else
-      chgat(1, A_REVERSE, 0, NULL);
-      */
+      move_cursor(key, &my_triangle);
     refresh();
   }
   delwin(menubar);
