@@ -5,7 +5,7 @@
 ** Login   <dabbec_j@epitech.net>
 ** 
 ** Started on  Tue Jul 09 17:28:25 2013 jalil dabbech
-** Last update Tue Jul 09 19:01:40 2013 jalil dabbech
+** Last update Tue Jul 09 19:04:23 2013 jalil dabbech
 */
 
 #include <ncurses.h>
