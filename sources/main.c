@@ -1,11 +1,11 @@
 /*
-** main.c for sources in /home/dabbec_j/projets/allum1/sources
+** main.c for sources in /home/dabbec_j/projets/sysunix/allum1/sources
 ** 
 ** Made by jalil dabbech
 ** Login   <dabbec_j@epitech.net>
 ** 
 ** Started on  Tue Jul 02 12:18:27 2013 jalil dabbech
-** Last update Mon Jul 08 16:55:13 2013 jalil dabbech
+** Last update Fri Jul 12 05:13:36 2013 jalil dabbech
 */
 
 #include <stdlib.h>
@@ -32,7 +32,7 @@ void	check_option(char *str, int j)
     }
 }
 
-void	check_args(int *nb_rows, int *nb_player, char **av)
+void	check_args(int *nbr, char **av)
 {
   int	j;
   int	i;
@@ -46,7 +46,7 @@ void	check_args(int *nb_rows, int *nb_player, char **av)
       if (my_strcmp(av[i], g_opt[j].short_str) == 0 ||
 	  my_strcmp(av[i], g_opt[j].long_str) == 0)
       {
-	g_opt[j].fct(nb_rows, nb_player, my_getnbr(av[i + 1]));
+	g_opt[j].fct(nbr, my_getnbr(av[i + 1]));
 	j = 4;
       }
       j++;
@@ -58,13 +58,14 @@ void	check_args(int *nb_rows, int *nb_player, char **av)
 
 int		main(int ac, char **av)
 {
-  int		nb_rows;
-  int		nb_player;
+  int		*nbr;
 
-  nb_rows = 4;
-  nb_player = 1;
+  if (!(nbr = malloc(2 * sizeof(int))))
+    return (-1);
+  nbr[ROWS] = 4;
+  nbr[PLAYERS] = 1;
   if (ac > 1)
-    check_args(&nb_rows, &nb_player, av);
-  my_allum(nb_rows, nb_player);
+    check_args(nbr, av);
+  my_allum(nbr);
   return (0);
 }

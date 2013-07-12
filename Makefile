@@ -1,28 +1,30 @@
 ##
-## Makefile for allum1 in /home/dabbec_j/projets/allum1
+## Makefile for allum1 in /home/dabbec_j/projets/sysunix/allum1
 ## 
 ## Made by jalil dabbech
 ## Login   <dabbec_j@epitech.net>
 ## 
 ## Started on  Thu Jun 06 16:16:01 2013 jalil dabbech
-## Last update Tue Jul 09 19:03:42 2013 jalil dabbech
+## Last update Fri Jul 12 05:06:34 2013 jalil dabbech
 ##
 
 NAME	=	allum1
 
 SRC	=	sources/main.c \
 		sources/manage_options.c \
-		sources/putch.c \
 		sources/allum1.c \
 		sources/my_list.c \
 		sources/manage_movment.c \
-		sources/my_ia.c
+		sources/my_ia.c \
+		sources/windows.c \
+		sources/my_triangle.c \
+		sources/my_printw.c
 
 OBJ	=	$(SRC:.c=.o)
 
 CC	=	gcc -Iincludes/
 
-CFLAGS	=	-W -Werror -Wall -Wextra -pedantic -ansi
+CFLAGS	=	-W -Wall -Wextra -pedantic -ansi
 
 LIB_DIR	=	my
 

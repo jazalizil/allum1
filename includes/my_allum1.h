@@ -1,27 +1,32 @@
 /*
-** my_allum1.h for includes in /home/dabbec_j/projets/allum1/includes
+** my_allum1.h for includes in /home/dabbec_j/projets/sysunix/allum1/includes
 ** 
 ** Made by jalil dabbech
 ** Login   <dabbec_j@epitech.net>
 ** 
 ** Started on  Tue Jul 02 12:53:36 2013 jalil dabbech
-** Last update Tue Jul 09 18:51:14 2013 jalil dabbech
+** Last update Fri Jul 12 05:13:40 2013 jalil dabbech
 */
 
 #ifndef ALLUM1_H_
 # define ALLUM1_H_
+# define ROWS 0
+# define PLAYERS 1
 # define ESCAPE 27
 # define SPACE 32
 # define VI_UP 106
 # define VI_DOWN 107
 # define VI_LEFT 104
 # define VI_RIGHT 108
+# define RULES 82
+
+#include <ncurses.h>
 
 typedef struct		s_opt
 {
   char			*short_str;
   char			*long_str;
-  void			(*fct)(int *, int *, int);
+  void			(*fct)(int *, int);
 }			t_opt;
 
 typedef struct		s_triangle
@@ -39,13 +44,19 @@ typedef struct		s_keys
   void			(*fct)(t_triangle **);
 }			t_keys;
 
-void			show_help(int *, int *, int);
-void			set_nbrows(int *, int *, int);
-void			set_nbplayer(int *, int *, int);
-int			putch(int);
-void			my_allum(int, int);
+typedef struct		s_player
+{
+  char			*name;
+  int			is_turn;
+  struct s_player	*next;
+}			t_player;
+
+void			show_help(int *, int);
+void			set_nbrows(int *, int);
+void			set_nbplayer(int *, int);
+void			my_allum(int *);
 void			my_put_in_list(t_triangle **, int, int);
-void			my_free_list(t_triangle *);
+void			my_free_list(t_triangle *, t_player *);
 int			is_in_list(t_triangle **, int, int);
 void			set_del(t_triangle **, int, int);
 int			is_del(t_triangle **, int, int);
@@ -56,5 +67,12 @@ void			move_right(t_triangle **);
 void			move_left(t_triangle **);
 void			do_the_ia(t_triangle **);
 void			del_char(t_triangle **);
+WINDOW			*draw_menubar();
+void			show_rules();
+WINDOW			*draw_window(int *, t_triangle **, t_player **);
+char			*draw_getname();
+void			draw_triangle(int, int, int, t_triangle **);
+void			add_player(t_player **, char *);
+void			my_printw(char *, int);
 
 #endif /* !ALLUM1_H_ */

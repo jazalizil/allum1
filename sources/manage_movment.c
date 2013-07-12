@@ -1,11 +1,11 @@
 /*
-** manage_movment.c for sources in /home/dabbec_j/projets/allum1/sources
+** manage_movment.c for sources in /home/dabbec_j/projets/sysunix/allum1/sources
 ** 
 ** Made by jalil dabbech
 ** Login   <dabbec_j@epitech.net>
 ** 
 ** Started on  Mon Jul 08 15:47:57 2013 jalil dabbech
-** Last update Tue Jul 09 18:58:07 2013 jalil dabbech
+** Last update Fri Jul 12 04:32:20 2013 jalil dabbech
 */
 
 #include <ncurses.h>

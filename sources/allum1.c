@@ -1,34 +1,29 @@
 /*
-** allum1.c for sources in /home/dabbec_j/projets/allum1/sources
+** allum1.c for sources in /home/dabbec_j/projets/sysunix/allum1/sources
 ** 
 ** Made by jalil dabbech
 ** Login   <dabbec_j@epitech.net>
 ** 
 ** Started on  Tue Jul 02 14:12:31 2013 jalil dabbech
-** Last update Tue Jul 09 18:58:07 2013 jalil dabbech
+** Last update Fri Jul 12 05:13:37 2013 jalil dabbech
 */
 
 #include <ncurses.h>
 #include <unistd.h>
+#include <stdlib.h>
 #include "my_allum1.h"
 
-void	init_curse()
+void	my_init()
 {
   initscr();
   start_color();
   init_pair(1,COLOR_WHITE, COLOR_BLUE);
   init_pair(2,COLOR_WHITE, COLOR_MAGENTA);
-  init_pair(3,COLOR_RED, COLOR_WHITE);
+  init_pair(3,COLOR_BLUE, COLOR_WHITE);
   init_pair(4,COLOR_BLUE, COLOR_WHITE);
+  init_pair(5,COLOR_RED, COLOR_BLACK);
   curs_set(0);
-  noecho();
   keypad(stdscr,TRUE);
-}
-
-void	draw_menubar(WINDOW *menubar)
-{
-  wbkgd(menubar, COLOR_PAIR(4));
-  waddstr(menubar, "Help");
 }
 
 void	draw_triangle(int nb_rows, int many_row, int many_col,
@@ -37,6 +32,7 @@ void	draw_triangle(int nb_rows, int many_row, int many_col,
   int	x;
   int	i;
   int	j;
+  int	del;
 
   i = many_row / 2 - nb_rows;
   x = many_col / 2;
@@ -48,9 +44,8 @@ void	draw_triangle(int nb_rows, int many_row, int many_col,
     {
       move(i, j);
       my_put_in_list(my_triangle, i, j);
-      attron(COLOR_PAIR(2));
-      printw("|");
-      attroff(COLOR_PAIR(2));
+      del = is_del(my_triangle, i, j);
+      my_printw(del ? " " : "|", del ? 1 : 2);
       j++;
     }
     x++;
@@ -60,21 +55,6 @@ void	draw_triangle(int nb_rows, int many_row, int many_col,
   move(i - 1, j - 1);
 }
 
-WINDOW		*draw_window(int nb_rows, int nb_player,
-    				t_triangle **my_triangle)
-{
-  WINDOW	*menubar;
-
-  bkgd(COLOR_PAIR(1));
-  menubar = subwin(stdscr, 1, COLS, 0, 0);
-  draw_menubar(menubar);
-  move(2, 0);
-  printw("Press Escape to quit");
-  refresh();
-  draw_triangle(nb_rows, LINES, COLS, my_triangle);
-  return (menubar);
-}
-
 void		del_char(t_triangle **my_triangle)
 {
   int		x;
@@ -82,9 +62,7 @@ void		del_char(t_triangle **my_triangle)
 
   getyx(stdscr, y, x);
   chgat(1, !A_UNDERLINE, 0, NULL);
-  attron(COLOR_PAIR(1));
-  printw(" ");
-  attroff(COLOR_PAIR(1));
+  my_printw(" ", 1);
   set_del(my_triangle, y, x);
   if (is_in_list(my_triangle, y, x - 1))
     move(y, x - 1);
@@ -97,31 +75,51 @@ void		del_char(t_triangle **my_triangle)
   chgat(1, A_UNDERLINE, 0, NULL);
 }
 
-void		my_allum(int nb_rows, int nb_player)
+WINDOW		*manage_key(int key, int *nbr, t_triangle **my_triangle,
+    			    t_player **players)
+{
+  WINDOW	*win;
+
+  win = NULL;
+  if (key == SPACE || key == KEY_BACKSPACE || key == KEY_DC)
+  {
+    del_char(my_triangle);
+    if (nbr[PLAYERS] == 1)
+      do_the_ia(my_triangle);
+  }
+  else if (key == RULES)
+  {
+    show_rules();
+    clear();
+    win = draw_window(nbr, my_triangle, players);
+  }
+  else
+    move_cursor(key, my_triangle);
+  return (win);
+}
+
+void		my_allum(int *nbr)
 {
   int		key;
   t_triangle	*my_triangle;
-  WINDOW	*menubar;
+  WINDOW	*win;
+  WINDOW	*tmp;
+  t_player	*players;
 
   my_triangle = NULL;
+  players = NULL;
   key = 0;
-  init_curse();
-  menubar = draw_window(nb_rows, nb_player, &my_triangle);
-  chgat(1, A_UNDERLINE, 0, NULL);
+  my_init();
+  win = draw_window(nbr, &my_triangle, &players);
   refresh();
   raw();
   while ((key = getch()) != ESCAPE)
   {
-    if (key == SPACE || key == KEY_BACKSPACE || key == KEY_DC)
-    {
-      del_char(&my_triangle);
-      if (nb_player == 1)
-	do_the_ia(&my_triangle);
-    }
-    else
-      move_cursor(key, &my_triangle);
+    if ((tmp = manage_key(key, nbr, &my_triangle, &players)))
+      win = tmp;
     refresh();
+    players = players->next;
   }
-  delwin(menubar);
+  delwin(win);
   endwin();
 }

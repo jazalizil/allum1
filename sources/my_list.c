@@ -1,11 +1,11 @@
 /*
-** my_list.c for sources in /home/dabbec_j/projets/allum1/sources
+** my_list.c for sources in /home/dabbec_j/projets/sysunix/allum1/sources
 ** 
 ** Made by jalil dabbech
 ** Login   <dabbec_j@epitech.net>
 ** 
 ** Started on  Wed Jun 05 14:39:20 2013 jalil dabbech
-** Last update Tue Jul 09 18:13:21 2013 jalil dabbech
+** Last update Fri Jul 12 05:13:39 2013 jalil dabbech
 */
 
 #include <stdlib.h>
@@ -38,49 +38,31 @@ void		my_put_in_list(t_triangle **my_list, int abs, int ord)
   }
 }
 
-void		set_del(t_triangle **my_list, int abs, int ord)
+void		add_player(t_player **my_list, char *name)
 {
-  while ((*my_list))
+  t_player	*new;
+
+  if (!(new = my_malloc(sizeof(t_player), "malloc t_player.\n")))
+    return;
+  new->name = name;
+  if (!(*my_list))
   {
-    if (abs == (*my_list)->x && ord == ((*my_list)->y) && !((*my_list)->del))
-    {
-      (*my_list)->del = 1;
-      return ;
-    }
-    my_list = &((*my_list)->next);
+    new->next = NULL;
+    *my_list = new;
+  }
+  else
+  {
+    new->next = *my_list;
+    (*my_list)->next = new;
   }
 }
 
-int		is_del(t_triangle **my_list, int abs, int ord)
+void		my_free_list(t_triangle *triangle, t_player *players)
 {
-  while ((*my_list))
-  {
-    if (abs == (*my_list)->x && ord == (*my_list)->y)
-    {
-      if ((*my_list)->del)
-	return (1);
-      else
-	return (0);
-    }
-    my_list = &((*my_list)->next);
-  }
-  return (0);
-}
-
-int		is_in_list(t_triangle **my_list, int abs, int ord)
-{
-  while ((*my_list))
-  {
-    if (abs == (*my_list)->x && ord == (*my_list)->y)
-      return (1);
-    my_list = &((*my_list)->next);
-  }
-  return (0);
-}
-
-void		my_free_list(t_triangle *my_list)
-{
-  if (my_list)
-    my_free_list(my_list->next);
-  free(my_list);
+  if (triangle)
+    my_free_list(triangle->next, NULL);
+  if (players)
+    my_free_list(NULL, players->next);
+  free(triangle);
+  free(players);
 }
