@@ -5,7 +5,7 @@
 ** Login   <dabbec_j@epitech.net>
 ** 
 ** Started on  Tue Jul 02 12:52:27 2013 jalil dabbech
-** Last update Fri Jul 12 04:54:37 2013 jalil dabbech
+** Last update Fri Jul 12 15:12:16 2013 jalil dabbech
 */
 
 #include <stdlib.h>
@@ -38,7 +38,7 @@ void	set_nbplayer(int *nbr, int to_set)
   if (nbr[PLAYERS] > 2)
   {
     write(2, "./allum1: Too much player\n", 26);
+    free(nbr);
     exit(EXIT_FAILURE);
   }
-  free(nbr);
 }

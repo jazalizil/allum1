@@ -5,7 +5,7 @@
 ** Login   <dabbec_j@epitech.net>
 ** 
 ** Started on  Wed Jun 05 14:39:20 2013 jalil dabbech
-** Last update Fri Jul 12 05:13:39 2013 jalil dabbech
+** Last update Fri Jul 12 13:40:47 2013 jalil dabbech
 */
 
 #include <stdlib.h>
@@ -19,7 +19,7 @@ void		my_put_in_list(t_triangle **my_list, int abs, int ord)
   t_triangle	*new;
 
   if (!(new = my_malloc(sizeof(t_triangle), "malloc t_triangle.\n")))
-    return;
+    return ;
   new->x = abs;
   new->y = ord;
   new->del = 0;
@@ -43,7 +43,7 @@ void		add_player(t_player **my_list, char *name)
   t_player	*new;
 
   if (!(new = my_malloc(sizeof(t_player), "malloc t_player.\n")))
-    return;
+    return ;
   new->name = name;
   if (!(*my_list))
   {
@@ -53,7 +53,8 @@ void		add_player(t_player **my_list, char *name)
   else
   {
     new->next = *my_list;
-    (*my_list)->next = new;
+    my_list = &((*my_list)->next);
+    *my_list = new;
   }
 }
 

@@ -5,7 +5,7 @@
 ** Login   <dabbec_j@epitech.net>
 ** 
 ** Started on  Tue Jul 02 14:12:31 2013 jalil dabbech
-** Last update Fri Jul 12 05:13:37 2013 jalil dabbech
+** Last update Fri Jul 12 15:22:24 2013 jalil dabbech
 */
 
 #include <ncurses.h>
@@ -75,23 +75,56 @@ void		del_char(t_triangle **my_triangle)
   chgat(1, A_UNDERLINE, 0, NULL);
 }
 
+int		is_arrow(int key)
+{
+  int		keys[4] =
+  {
+    KEY_LEFT, KEY_RIGHT, VI_LEFT, VI_RIGHT
+  };
+  int		i;
+
+  i = 0;
+  while (i < 4)
+  {
+    if (key == keys[i])
+      return (1);
+    i++;
+  }
+  return (0);
+}
+
+void		select_and_del(t_triangle **my_triangle)
+{
+  int		key;
+  
+  while ((key = getch()) != SPACE)
+  {
+    if (is_arrow(key))
+      chgat(1, A_UNDERLINE, 0, NULL);
+  }
+}
+
 WINDOW		*manage_key(int key, int *nbr, t_triangle **my_triangle,
     			    t_player **players)
 {
   WINDOW	*win;
 
   win = NULL;
-  if (key == SPACE || key == KEY_BACKSPACE || key == KEY_DC)
+  if (key == ENTER || key == KEY_BACKSPACE || key == KEY_DC)
   {
     del_char(my_triangle);
     if (nbr[PLAYERS] == 1)
       do_the_ia(my_triangle);
   }
-  else if (key == RULES)
+  else if (key == KEY_F(3))
   {
     show_rules();
     clear();
     win = draw_window(nbr, my_triangle, players);
+  }
+  else if (key == SPACE)
+  {
+    select_and_del(my_triangle);
   }
   else
     move_cursor(key, my_triangle);
@@ -122,4 +155,7 @@ void		my_allum(int *nbr)
   }
   delwin(win);
   endwin();
+  /*
+  my_free_list(my_triangle, players);
+  */
 }

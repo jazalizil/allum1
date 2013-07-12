@@ -5,7 +5,7 @@
 ** Login   <dabbec_j@epitech.net>
 ** 
 ** Started on  Tue Jul 02 12:18:27 2013 jalil dabbech
-** Last update Fri Jul 12 05:13:36 2013 jalil dabbech
+** Last update Fri Jul 12 14:45:30 2013 jalil dabbech
 */
 
 #include <stdlib.h>
@@ -67,5 +67,6 @@ int		main(int ac, char **av)
   if (ac > 1)
     check_args(nbr, av);
   my_allum(nbr);
+  free(nbr);
   return (0);
 }

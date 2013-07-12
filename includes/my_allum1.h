@@ -5,7 +5,7 @@
 ** Login   <dabbec_j@epitech.net>
 ** 
 ** Started on  Tue Jul 02 12:53:36 2013 jalil dabbech
-** Last update Fri Jul 12 05:13:40 2013 jalil dabbech
+** Last update Fri Jul 12 15:22:24 2013 jalil dabbech
 */
 
 #ifndef ALLUM1_H_
@@ -14,11 +14,11 @@
 # define PLAYERS 1
 # define ESCAPE 27
 # define SPACE 32
+# define ENTER 10
 # define VI_UP 106
 # define VI_DOWN 107
 # define VI_LEFT 104
 # define VI_RIGHT 108
-# define RULES 82
 
 #include <ncurses.h>
 
