@@ -5,7 +5,7 @@
 ** Login   <dabbec_j@epitech.net>
 ** 
 ** Started on  Tue Jul 02 12:53:36 2013 jalil dabbech
-** Last update Fri Jul 12 15:22:24 2013 jalil dabbech
+** Last update Sat Jul 13 05:26:07 2013 jalil dabbech
 */
 
 #ifndef ALLUM1_H_
@@ -67,9 +67,8 @@ void			move_right(t_triangle **);
 void			move_left(t_triangle **);
 void			do_the_ia(t_triangle **);
 void			del_char(t_triangle **);
-WINDOW			*draw_menubar();
 void			show_rules();
-WINDOW			*draw_window(int *, t_triangle **, t_player **);
+void			draw_window(int *, t_triangle **, t_player **);
 char			*draw_getname();
 void			draw_triangle(int, int, int, t_triangle **);
 void			add_player(t_player **, char *);

@@ -1,11 +1,11 @@
 /*
-** my.h for includes in /home/dabbec_j/projets/allum1/includes
+** my.h for includes in /home/dabbec_j/projets/sysunix/allum1/includes
 ** 
 ** Made by jalil dabbech
 ** Login   <dabbec_j@epitech.net>
 ** 
 ** Started on  Tue Jun 18 16:27:41 2013 jalil dabbech
-** Last update Wed Jul 10 16:42:59 2013 jalil dabbech
+** Last update Sat Jul 13 05:12:03 2013 jalil dabbech
 */
 
 #ifndef MY_H_

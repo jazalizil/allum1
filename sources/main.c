@@ -5,7 +5,7 @@
 ** Login   <dabbec_j@epitech.net>
 ** 
 ** Started on  Tue Jul 02 12:18:27 2013 jalil dabbech
-** Last update Fri Jul 12 14:45:30 2013 jalil dabbech
+** Last update Sat Jul 13 05:42:33 2013 jalil dabbech
 */
 
 #include <stdlib.h>
@@ -62,7 +62,7 @@ int		main(int ac, char **av)
 
   if (!(nbr = malloc(2 * sizeof(int))))
     return (-1);
-  nbr[ROWS] = 4;
+  nbr[ROWS] = 20;
   nbr[PLAYERS] = 1;
   if (ac > 1)
     check_args(nbr, av);

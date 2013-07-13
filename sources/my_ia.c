@@ -1,11 +1,11 @@
 /*
-** my_ia.c for sources in /home/dabbec_j/projets/allum1/sources
+** my_ia.c for sources in /home/dabbec_j/projets/sysunix/allum1/sources
 ** 
 ** Made by jalil dabbech
 ** Login   <dabbec_j@epitech.net>
 ** 
 ** Started on  Tue Jul 09 17:28:25 2013 jalil dabbech
-** Last update Tue Jul 09 19:04:23 2013 jalil dabbech
+** Last update Sat Jul 13 06:26:16 2013 jalil dabbech
 */
 
 #include <ncurses.h>
@@ -19,17 +19,9 @@ void		clean(t_triangle **my_triangle)
 
   getyx(stdscr, y, x);
   if (is_del(my_triangle, y, x))
-  {
-    attron(COLOR_PAIR(1));
-    printw(" ");
-    attroff(COLOR_PAIR(1));
-  }
+    my_printw(" ", 1);
   else
-  {
-    attron(COLOR_PAIR(2));
-    printw("|");
-    attroff(COLOR_PAIR(2));
-  }
+    my_printw("|", 2);
   refresh();
 }
 
